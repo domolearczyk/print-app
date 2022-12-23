@@ -1,32 +1,35 @@
 'use strict'
 
-import { app, protocol, BrowserWindow } from 'electron'
+import { app, protocol, BrowserWindow, ipcMain } from 'electron'
 import { createProtocol } from 'vue-cli-plugin-electron-builder/lib'
 import installExtension, { VUEJS3_DEVTOOLS } from 'electron-devtools-installer'
 const isDevelopment = process.env.NODE_ENV !== 'production'
-import { autoUpdater} from "electron-updater";
+import { autoUpdater } from "electron-updater";
 import log from "electron-log";
 import path from "path"
 
-log.transports.file.resolvePath = () => path.join('D:\\Projects\\acut\\print-app', '/logs/log.log')
-log.info('Hello test')
-log.log('Application version '+app.getVersion())
+log.transports.file.resolvePath = () => path.join('C:\\Users\\dolea\\Projekte\\acut\\print-app', '/logs/log.log')
 
 // Scheme must be registered before the app is ready
 protocol.registerSchemesAsPrivileged([
   { scheme: 'app', privileges: { secure: true, standard: true } }
 ])
 
+let win
+
 async function createWindow() {
   // Create the browser window.
-  const win = new BrowserWindow({
+  win = new BrowserWindow({
     width: 800,
     height: 600,
     webPreferences: {
       nodeIntegration: true,
-      contextIsolation: false,
+      contextIsolation: true,
+      enableRemoteModule: false,
+      preload: path.join(__dirname, 'preload.js'),
     },
-    resizable: false
+    title: 'acut WMS Print-App',
+    resizable: false,
   })
 
   if (process.env.WEBPACK_DEV_SERVER_URL) {
@@ -68,9 +71,7 @@ app.on('ready', async () => {
     }
   }
   createWindow()
-  autoUpdater.checkForUpdatesAndNotify().then(() => {
-    console.log('updatecheck')
-  })
+  autoUpdater.checkForUpdatesAndNotify()
 })
 
 // Exit cleanly on request from parent process in development mode.
@@ -87,6 +88,15 @@ if (isDevelopment) {
     })
   }
 }
+
+////////////////////////////////
+// No changes above this line
+////////////////////////////////
+
+ipcMain.on('get-printer-list', (event) => {
+  log.log('get printer list')
+  event.reply('get-printer-list', win.webContents.getPrinters())
+})
 
 autoUpdater.on('update-available', () => {
   log.info('update available')
