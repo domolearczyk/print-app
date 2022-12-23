@@ -12,3 +12,87 @@
 [2022-12-23 15:29:36.073] [info]  Application version 0.1.0
 [2022-12-23 16:10:24.621] [info]  Hello test
 [2022-12-23 16:10:24.624] [info]  Application version 0.1.0
+[2022-12-23 16:21:54.407] [info]  Hello test
+[2022-12-23 16:21:54.410] [info]  Application version 0.1.0
+[2022-12-23 16:21:54.565] [info]  checking for updates
+[2022-12-23 16:22:06.035] [info]  Hello test
+[2022-12-23 16:22:06.039] [info]  Application version 0.1.0
+[2022-12-23 16:22:06.130] [info]  checking for updates
+[2022-12-23 16:23:07.095] [info]  Hello test
+[2022-12-23 16:23:07.098] [info]  Application version 0.1.0
+[2022-12-23 16:23:07.178] [info]  checking for updates
+[2022-12-23 16:23:23.057] [info]  Hello test
+[2022-12-23 16:23:23.060] [info]  Application version 0.1.0
+[2022-12-23 16:23:23.145] [info]  checking for updates
+[2022-12-23 16:23:24.361] [info]  update available
+[2022-12-23 16:23:26.575] [info]  download in progress
+[2022-12-23 16:23:26.576] [info]  {
+  total: 679722,
+  delta: 45043,
+  transferred: 45043,
+  percent: 6.626679730831134,
+  bytesPerSecond: 62128
+}
+[2022-12-23 16:23:26.700] [info]  download in progress
+[2022-12-23 16:23:26.700] [info]  {
+  total: 679722,
+  delta: 65580,
+  transferred: 65580,
+  percent: 9.64806200181839,
+  bytesPerSecond: 77153
+}
+[2022-12-23 16:23:27.874] [info]  download in progress
+[2022-12-23 16:23:27.876] [info]  {
+  total: 679722,
+  delta: 131116,
+  transferred: 131116,
+  percent: 19.289650768990853,
+  bytesPerSecond: 64781
+}
+[2022-12-23 16:23:27.897] [info]  download in progress
+[2022-12-23 16:23:27.898] [info]  {
+  total: 679722,
+  delta: 259511,
+  transferred: 390627,
+  percent: 57.468641591709556,
+  bytesPerSecond: 190829
+}
+[2022-12-23 16:23:29.305] [info]  download in progress
+[2022-12-23 16:23:29.305] [info]  {
+  total: 679722,
+  delta: 338628,
+  transferred: 469744,
+  percent: 69.10825307993562,
+  bytesPerSecond: 136000
+}
+[2022-12-23 16:23:29.307] [info]  download in progress
+[2022-12-23 16:23:29.308] [info]  {
+  total: 679722,
+  delta: 52401,
+  transferred: 522145,
+  percent: 76.81743418632911,
+  bytesPerSecond: 151040
+}
+[2022-12-23 16:23:29.450] [info]  download in progress
+[2022-12-23 16:23:29.450] [info]  {
+  total: 679722,
+  delta: 93780,
+  transferred: 563524,
+  percent: 82.90507001391745,
+  bytesPerSecond: 156534
+}
+[2022-12-23 16:23:29.600] [info]  download in progress
+[2022-12-23 16:23:29.600] [info]  {
+  total: 679722,
+  delta: 209978,
+  transferred: 679722,
+  percent: 100,
+  bytesPerSecond: 181259
+}
+[2022-12-23 16:23:29.608] [info]  update downloaded
+[2022-12-23 16:23:40.179] [info]  Hello test
+[2022-12-23 16:23:40.183] [info]  Application version 0.1.0
+[2022-12-23 16:23:40.274] [info]  checking for updates
+[2022-12-23 16:23:50.332] [info]  Hello test
+[2022-12-23 16:23:50.336] [info]  Application version 0.1.1
+[2022-12-23 16:23:50.449] [info]  checking for updates

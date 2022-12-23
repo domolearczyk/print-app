@@ -2,7 +2,7 @@
   <div>
     <div class="row">
       <div class="col-6">
-        test
+        hier ist die neue version
       </div>
       <div class="col-6">
         test2
