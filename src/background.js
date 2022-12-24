@@ -1,6 +1,6 @@
 'use strict'
 
-import { app, protocol, BrowserWindow, ipcMain } from 'electron'
+import { app, dialog, protocol, BrowserWindow, ipcMain } from 'electron'
 import { createProtocol } from 'vue-cli-plugin-electron-builder/lib'
 import installExtension, { VUEJS3_DEVTOOLS } from 'electron-devtools-installer'
 const isDevelopment = process.env.NODE_ENV !== 'production'
@@ -22,10 +22,12 @@ async function createWindow() {
   win = new BrowserWindow({
     width: 800,
     height: 600,
+    autoHideMenuBar: true,
     webPreferences: {
       nodeIntegration: true,
       contextIsolation: true,
-      enableRemoteModule: false,
+      enableRemoteModule: true,
+      nodeIntegrationInWorker: true,
       preload: path.join(__dirname, 'preload.js'),
     },
     title: 'acut WMS Print-App',
@@ -93,10 +95,49 @@ if (isDevelopment) {
 // No changes above this line
 ////////////////////////////////
 
+////////////////////////////////
+// IPC Listeners
+////////////////////////////////
+
+ipcMain.on('get-version', (event) => {
+  // let path = require("path").dirname(require('electron').app.getPath("exe"))
+  event.reply('get-version', app.getVersion())
+  log.log(app.getVersion())
+})
+
 ipcMain.on('get-printer-list', (event) => {
-  log.log('get printer list')
   event.reply('get-printer-list', win.webContents.getPrinters())
 })
+
+ipcMain.on('select-mo-path', async (event) => {
+  const result = await dialog.showOpenDialog(win, {
+    properties: ['openDirectory']
+  })
+  event.reply('select-mo-path', result.filePaths[0])
+})
+
+ipcMain.on('select-download-path', async (event) => {
+  const result = await dialog.showOpenDialog(win, {
+    properties: ['openDirectory']
+  })
+  event.reply('select-download-path', result.filePaths[0])
+})
+
+ipcMain.on('check-for-update', (event) => {
+  autoUpdater.on('update-available', () => {
+    log.info('update available')
+    event.reply('check-for-update', false)
+  })
+})
+
+ipcMain.on('open-sumatra', (event) => {
+  log.log(event)
+  log.log('test')
+})
+
+////////////////////////////////
+// AutoUpdater functions
+////////////////////////////////
 
 autoUpdater.on('update-available', () => {
   log.info('update available')

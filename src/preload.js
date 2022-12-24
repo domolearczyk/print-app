@@ -1,6 +1,6 @@
 const { contextBridge, ipcRenderer } = require('electron');
 
-const validChannels = ['get-printer-list'];
+const validChannels = ['get-printer-list', 'get-version', 'select-mo-path', 'select-download-path', 'check-for-update'];
 contextBridge.exposeInMainWorld(
     'ipc', {
         send: (channel, data) => {
