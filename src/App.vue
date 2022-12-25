@@ -3,24 +3,11 @@
     <div id="main">
       <section class="tabs">
         <menu role="tablist" aria-label="Sample Tabs">
-          <button role="tab" :aria-selected="activeTab === 'spots'" aria-controls="spots" @click="activeTab = 'spots'">Station</button>
+          <button role="tab" :aria-selected="activeTab === 'settings'" aria-controls="settings" @click="activeTab = 'settings'">Einstellungen</button>
           <button role="tab" :aria-selected="activeTab === 'printers'" aria-controls="printers" @click="activeTab = 'printers'">Drucker</button>
           <button role="tab" :aria-selected="activeTab === 'paths'" aria-controls="paths" @click="activeTab = 'paths'">Pfade</button>
-          <button role="tab" :aria-selected="activeTab === 'settings'" aria-controls="settings" @click="activeTab = 'settings'">Einstellungen</button>
-          <button disabled role="tab" :aria-selected="activeTab === 'logs'" aria-controls="logs" @click="activeTab = 'logs'">Log</button>
+          <button role="tab" :aria-selected="activeTab === 'logs'" aria-controls="logs" @click="activeTab = 'logs'">Log</button>
         </menu>
-        <article role="tabpanel" :class="{ 'd-none': activeTab !== 'spots' }">
-          <div class="row mt-3">
-            <div class="col-6">
-              <div>Station</div>
-            </div>
-            <div class="col-6">
-              <select class="w-100" v-model="spot">
-                <option v-for="(spot, index) in spots" :key="index" :value="spot.id">{{ spot.id }}</option>
-              </select>
-            </div>
-          </div>
-        </article>
         <article role="tabpanel" id="printers" :class="{ 'd-none': activeTab !== 'printers' }">
           <div class="row mt-3">
             <div class="col-6">
@@ -55,6 +42,22 @@
               </select>
             </div>
           </div>
+          <div class="row mt-4">
+            <div class="col-6">
+              <div>Barcode-Drucker</div>
+              <small>Barcodes, Regal-Label</small>
+            </div>
+            <div class="col-6">
+              <select class="w-100" v-model="settings.printers.barcodes">
+                <option v-for="(printer, index) in printerList" :key="index" :value="printer.displayName">{{ printer.displayName }}</option>
+              </select>
+            </div>
+          </div>
+          <div class="row mt-4">
+            <div class="col-12">
+              <button @click="saveSettings">Speichern</button>
+            </div>
+          </div>
         </article>
         <article role="tabpanel" :class="{ 'd-none': activeTab !== 'paths' }">
           <div class="row mt-3">
@@ -75,8 +78,52 @@
               <input @click="selectMoPath" class="w-100" type="text" v-model="settings.paths.mo">
             </div>
           </div>
+          <div class="row mt-4">
+            <div class="col-12">
+              <button @click="saveSettings">Speichern</button>
+            </div>
+          </div>
         </article>
         <article role="tabpanel" :class="{ 'd-none': activeTab !== 'settings' }">
+          <div class="row mt-3">
+            <div class="col-6">
+              Token
+            </div>
+            <div class="col-6">
+              <input type="text" class="w-100" v-model="settings.token">
+            </div>
+          </div>
+          <div class="row mt-3">
+            <div class="col-6">
+              Ably-Schlüssel
+            </div>
+            <div class="col-6">
+              <input type="text" class="w-100" v-model="settings.ablyKey">
+            </div>
+          </div>
+          <div class="row mt-3">
+            <div class="col-6">
+              Mailoptimizer
+            </div>
+            <div class="col-6">
+              <input type="checkbox" id="mailoptimizer-checkbox" v-model="settings.mailoptimizer" :value="true">
+              <label for="mailoptimizer-checkbox">Aktiv</label>
+            </div>
+          </div>
+          <div class="row mt-3">
+            <div class="col-6">
+              <div>Polling-Intervall</div>
+              <small>Bei langsamen/alten PC's empfiehlt sich ein höherer Polling-Interval</small>
+            </div>
+            <div class="col-6">
+              <select class="w-100" v-model="settings.interval">
+                <option :value="1000">1 Sekunde</option>
+                <option :value="3000">3 Sekunden</option>
+                <option :value="5000">5 Sekunden</option>
+                <option :value="10000">10 Sekunden</option>
+              </select>
+            </div>
+          </div>
           <div class="row mt-3">
             <div class="col-6">
               Update
@@ -91,6 +138,11 @@
             </div>
             <div class="col-6">
               {{ version }}
+            </div>
+          </div>
+          <div class="row mt-4">
+            <div class="col-12">
+              <button @click="saveSettings">Speichern</button>
             </div>
           </div>
         </article>
@@ -110,31 +162,33 @@
 
 <script>
 // import axios from 'axios'
+// import Ably from 'ably'
+
 export default {
   data() {
     return {
       log: '',
-      spot: null,
       version: '0.0.1',
-      activeTab: 'spots',
+      activeTab: 'settings',
       blocked: false,
       settings: {
+        token: '',
+        ablyKey: '',
+        mailoptimizer: false,
         printers: {
           a4: null,
           labelBig: null,
-          labelSmall: null
+          labelSmall: null,
+          barcodes: null
         },
         paths: {
-          mo: null,
-          download: null
-        }
+          mo: '',
+          download: ''
+        },
+        interval: 1000
       },
       printerList: [],
-      spots: [{
-        id: 1
-      }, {
-        id: 2
-      }]
+      ablyConnected: false
     }
   },
   methods: {
@@ -157,6 +211,10 @@ export default {
       this.appendToLog('Prüfe auf verfügbare Updates')
       window.ipc.send('check-for-update')
     },
+    saveSettings() {
+      window.ipc.send('save-settings', JSON.stringify(this.settings))
+      alert('Einstellungen gespeichert')
+    },
     appendToLog(message) {
       this.log += new Date().toLocaleString()+': '+message + "\n"
     }
@@ -164,9 +222,20 @@ export default {
   mounted() {
     window.ipc.send('get-version')
     window.ipc.send('get-printer-list')
+    window.ipc.send('load-settings')
+
+    // this.ably = new Ably.Realtime(this.settings.ablyKey)
 
     window.ipc.on('get-version', (version) => {
       this.version = version
+    })
+
+    window.ipc.on('load-settings', (settings) => {
+      this.settings = JSON.parse(settings)
+    })
+
+    window.ipc.on('save-settings', () => {
+      window.ipc.send('wms-polling')
     })
 
     window.ipc.on('select-mo-path', (path) => {
@@ -185,11 +254,23 @@ export default {
       this.appendToLog(update ? 'Update verfügbar' : 'Kein Update verfügbar')
     })
 
-    setInterval(() => {
-      if(this.spot !== null) {
-        this.appendToLog('Suche nach neuen Labels')
+    window.ipc.on('append-to-log', (log) => {
+      this.appendToLog(log)
+    })
+
+    window.ipc.on('update-downloaded', () => {
+      if(confirm('Es ist ein neues Update verfügbar. Jetzt App neu starten?')) {
+        window.ipc.send('restart-app')
       }
-    }, 2000)
+    })
+
+    setInterval(() => {
+      if(this.settings.mailoptimizer) {
+        window.ipc.send('mailoptimizer-polling')
+      }
+    }, 3000)
+
+    window.ipc.send('wms-polling')
   }
 }
 </script>

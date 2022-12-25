@@ -1,6 +1,20 @@
 const { contextBridge, ipcRenderer } = require('electron');
 
-const validChannels = ['get-printer-list', 'get-version', 'select-mo-path', 'select-download-path', 'check-for-update'];
+const validChannels = [
+    'append-to-log',
+    'get-printer-list',
+    'get-version',
+    'select-mo-path',
+    'select-download-path',
+    'check-for-update',
+    'mailoptimizer-polling',
+    'wms-polling',
+    'save-settings',
+    'load-settings',
+    'restart-app',
+    'update-downloaded'
+];
+
 contextBridge.exposeInMainWorld(
     'ipc', {
         send: (channel, data) => {

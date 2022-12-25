@@ -7,6 +7,12 @@ const isDevelopment = process.env.NODE_ENV !== 'production'
 import { autoUpdater } from "electron-updater";
 import log from "electron-log";
 import path from "path"
+import Store from 'electron-store'
+import fs from 'fs'
+import fsExtra from 'fs-extra'
+import Ably from 'ably'
+import https from 'https'
+import { print } from 'pdf-to-printer';
 
 log.transports.file.resolvePath = () => path.join('C:\\Users\\dolea\\Projekte\\acut\\print-app', '/logs/log.log')
 
@@ -16,6 +22,7 @@ protocol.registerSchemesAsPrivileged([
 ])
 
 let win
+const store = new Store()
 
 async function createWindow() {
   // Create the browser window.
@@ -95,12 +102,45 @@ if (isDevelopment) {
 // No changes above this line
 ////////////////////////////////
 
+async function downloadFile (url, targetFile) {
+  return await new Promise((resolve, reject) => {
+    https.get(url, (response) => {
+      // const code = response.statusCode ?? 0
+
+      // if (code >= 400) {
+      //   return reject(new Error(response.statusMessage))
+      // }
+      //
+      // // handle redirects
+      // if (code > 300 && code < 400 && !!response.headers.location) {
+      //   return downloadFile(response.headers.location, targetFile)
+      // }
+
+      // save the file to disk
+      const fileWriter = fs
+          .createWriteStream(targetFile)
+          .on('finish', () => {
+            resolve({
+              targetFile: targetFile
+            })
+          })
+
+      response.pipe(fileWriter)
+    }).on('error', error => {
+      reject(error)
+    })
+  })
+}
+
+function timestamp() {
+  return Math.floor(Date.now() / 1000)
+}
+
 ////////////////////////////////
 // IPC Listeners
 ////////////////////////////////
 
 ipcMain.on('get-version', (event) => {
-  // let path = require("path").dirname(require('electron').app.getPath("exe"))
   event.reply('get-version', app.getVersion())
   log.log(app.getVersion())
 })
@@ -135,6 +175,85 @@ ipcMain.on('open-sumatra', (event) => {
   log.log('test')
 })
 
+ipcMain.on('mailoptimizer-polling', (event) => {
+  let settings = JSON.parse(store.get('settings'))
+
+  if(settings.paths.download === '' || settings.paths.mo === '' || settings.token === '') {
+    return
+  }
+
+  let xmlFiles = fs.readdirSync(settings.paths.download)
+  xmlFiles.forEach(file => {
+    if (file.indexOf(settings.token+'.bpslabel.xml') !== -1) {
+      event.reply('append-to-log', 'Mailoptimizer-XML gefunden: '+file)
+      fsExtra.move(settings.paths.download+'\\'+file, settings.paths.mo+'\\In\\'+file)
+          .then(() => {
+            event.reply('append-to-log', 'XML-Datei zu Mailoptimizer verschoben: '+file)
+          })
+    }
+  })
+
+  // let labelFiles = fs.readdirSync(settings.paths.mo+'\\Adresslabel')
+  // labelFiles.forEach(file => {
+  //   if (file.indexOf(settings.token+'.bpslabel.png') !== -1) {
+  //     event.reply('append-to-log', 'Mailoptimizer-Label gefunden: '+file)
+  //     fsExtra.move(settings.paths.mo+'\\Adresslabel\\'+file, settings.paths.mo+'\\Adresslabel\\Verarbeitet\\'+file)
+  //         .then(() => {
+  //           event.reply('append-to-log', 'XML-Datei zu Mailoptimizer verschoben: '+file)
+  //         })
+  //   }
+  // })
+})
+
+ipcMain.on('wms-polling', (event) => {
+  let settings = JSON.parse(store.get('settings'))
+
+  if(settings.paths.download === '' || settings.ablyKey === '' || settings.token === '') {
+    event.reply('append-to-log', 'Es konnte keine Verbindung zum Server aufgebaut werden. Bitte Einstellungen prüfen')
+    return
+  }
+
+  const ably = new Ably.Realtime(settings.ablyKey)
+
+  ably.connection.on('failed', () => {
+    event.reply('append-to-log', 'Es konnte keine Verbindung zum Server aufgebaut werden. Bitte Einstellungen prüfen')
+  })
+
+  ably.connection.on('connected', () => {
+    event.reply('append-to-log', 'Verbindung zum Server aufgebaut. Warte auf Label...')
+
+    const channel = ably.channels.get('public:prints')
+    channel.subscribe('print.'+settings.token, (payload) => {
+      event.reply('append-to-log', 'Druckauftrag empfangen')
+
+      let file = settings.paths.download+'\\'+timestamp()+'.pdf'
+      downloadFile(payload.data.url, file)
+          .then(() => {
+            print(file, {
+              printer: settings.printers[payload.data.printer],
+              silent: true,
+              pages: 1,
+              sumatraPdfPath: require("path").dirname(require('electron').app.getPath("exe"))+'\\SumatraPDF-3.4.6-32.exe'
+            })
+          })
+    })
+  })
+})
+
+ipcMain.on('save-settings', (event, settings) => {
+  store.set('settings', settings)
+  event.reply('save-settings')
+  event.reply('append-to-log', 'Einstellungen gespeichert')
+})
+
+ipcMain.on('load-settings', (event) => {
+  event.reply('load-settings', store.get('settings'))
+})
+
+ipcMain.on('restart-app', () => {
+  autoUpdater.quitAndInstall()
+})
+
 ////////////////////////////////
 // AutoUpdater functions
 ////////////////////////////////
@@ -153,5 +272,5 @@ autoUpdater.on('download-progress', (progress) => {
 })
 
 autoUpdater.on('update-downloaded', () => {
-  log.info('update downloaded')
+  win.webContents.send('update-downloaded')
 })
