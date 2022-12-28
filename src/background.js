@@ -307,7 +307,9 @@ ipcMain.on('wms-polling', (event) => {
 })
 
 ipcMain.on('save-settings', (event, settings) => {
-  ably.close()
+  if(ably) {
+    ably.close()
+  }
   event.reply('append-to-log', 'Verbindung zum Server beendet')
   store.set('settings', settings)
   event.reply('save-settings')

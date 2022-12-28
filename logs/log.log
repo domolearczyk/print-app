@@ -9,3 +9,112 @@
 [2022-12-28 12:59:21.922] [info]  0.2.0
 [2022-12-28 12:59:45.045] [info]  0.2.0
 [2022-12-28 13:00:29.454] [info]  0.2.0
+[2022-12-28 13:22:36.881] [info]  checking for updates
+[2022-12-28 13:22:37.083] [info]  0.2.0
+[2022-12-28 13:22:49.232] [info]  checking for updates
+[2022-12-28 13:22:49.408] [info]  0.2.0
+[2022-12-28 13:23:00.659] [info]  checking for updates
+[2022-12-28 13:23:00.848] [info]  0.2.0
+[2022-12-28 13:23:01.607] [info]  update available
+[2022-12-28 13:23:03.706] [info]  download in progress
+[2022-12-28 13:23:03.707] [info]  {
+  total: 1164753,
+  delta: 59970,
+  transferred: 59970,
+  percent: 5.148731104362899,
+  bytesPerSecond: 70553
+}
+[2022-12-28 13:23:03.835] [info]  download in progress
+[2022-12-28 13:23:03.836] [info]  {
+  total: 1164753,
+  delta: 83949,
+  transferred: 83949,
+  percent: 7.207450850094397,
+  bytesPerSecond: 85750
+}
+[2022-12-28 13:23:04.408] [info]  download in progress
+[2022-12-28 13:23:04.409] [info]  {
+  total: 1164753,
+  delta: 151728,
+  transferred: 151728,
+  percent: 13.026624528977388,
+  bytesPerSecond: 97763
+}
+[2022-12-28 13:23:04.454] [info]  download in progress
+[2022-12-28 13:23:04.455] [info]  {
+  total: 1164753,
+  delta: 700329,
+  transferred: 852057,
+  percent: 73.153449701353,
+  bytesPerSecond: 533202
+}
+[2022-12-28 13:23:07.939] [info]  download in progress
+[2022-12-28 13:23:07.941] [info]  {
+  total: 1164753,
+  delta: 782240,
+  transferred: 933968,
+  percent: 80.18592783190942,
+  bytesPerSecond: 183743
+}
+[2022-12-28 13:23:07.948] [info]  download in progress
+[2022-12-28 13:23:07.949] [info]  {
+  total: 1164753,
+  delta: 50601,
+  transferred: 984569,
+  percent: 84.53028238605094,
+  bytesPerSecond: 193356
+}
+[2022-12-28 13:23:10.160] [info]  download in progress
+[2022-12-28 13:23:10.161] [info]  {
+  total: 1164753,
+  delta: 92056,
+  transferred: 1026024,
+  percent: 88.08940608008736,
+  bytesPerSecond: 140474
+}
+[2022-12-28 13:23:10.295] [info]  download in progress
+[2022-12-28 13:23:10.296] [info]  {
+  total: 1164753,
+  delta: 173958,
+  transferred: 1107926,
+  percent: 95.12111151463014,
+  bytesPerSecond: 148935
+}
+[2022-12-28 13:23:10.302] [info]  download in progress
+[2022-12-28 13:23:10.304] [info]  {
+  total: 1164753,
+  delta: 56827,
+  transferred: 1164753,
+  percent: 100,
+  bytesPerSecond: 156427
+}
+[2022-12-28 13:23:26.141] [info]  checking for updates
+[2022-12-28 13:23:26.416] [info]  0.2.1
+[2022-12-28 13:26:49.238] [info]  true
+[2022-12-28 13:26:49.239] [info]  \\172.20.1.100\Mailoptimizer\Kunden\61227\Adresslabel true
+[2022-12-28 13:26:49.240] [info]  \\172.20.1.100\Mailoptimizer\Kunden\61227\In true
+[2022-12-28 13:26:49.240] [info]  \\172.20.1.100\Mailoptimizer\Kunden\61227\Adresslabel\Verarbeitet true
+[2022-12-28 13:45:32.099] [info]  checking for updates
+[2022-12-28 13:45:32.298] [info]  0.2.1
+[2022-12-28 13:45:43.343] [info]  checking for updates
+[2022-12-28 13:45:43.607] [info]  0.2.1
+[2022-12-28 13:46:01.261] [info]  0.2.1
+[2022-12-28 13:46:55.637] [info]  0.2.1
+[2022-12-28 13:47:32.166] [info]  0.2.1
+[2022-12-28 13:48:31.584] [info]  0.2.1
+[2022-12-28 13:49:00.729] [info]  0.2.1
+[2022-12-28 13:49:30.168] [info]  0.2.1
+[2022-12-28 13:49:54.693] [info]  0.2.1
+[2022-12-28 13:50:22.535] [info]  0.2.1
+[2022-12-28 13:52:46.496] [info]  0.2.1
+[2022-12-28 13:53:30.642] [info]  0.2.1
+[2022-12-28 13:54:16.097] [info]  0.2.1
+[2022-12-28 13:54:29.462] [info]  0.2.1
+[2022-12-28 13:56:41.312] [info]  checking for updates
+[2022-12-28 13:56:41.662] [info]  0.2.2
+[2022-12-28 13:56:48.586] [info]  checking for updates
+[2022-12-28 13:56:48.772] [info]  0.2.2
+[2022-12-28 13:56:54.511] [info]  checking for updates
+[2022-12-28 13:56:54.705] [info]  0.2.2
+[2022-12-28 14:20:21.217] [info]  checking for updates
+[2022-12-28 14:20:21.409] [info]  0.2.2
