@@ -13,8 +13,7 @@ import fsExtra from 'fs-extra'
 import Ably from 'ably'
 import https from 'https'
 import { print } from 'pdf-to-printer';
-
-log.transports.file.resolvePath = () => path.join('C:\\Users\\dolea\\Projekte\\acut\\print-app', '/logs/log.log')
+import isDev from 'electron-is-dev'
 
 // Scheme must be registered before the app is ready
 protocol.registerSchemesAsPrivileged([
@@ -22,7 +21,17 @@ protocol.registerSchemesAsPrivileged([
 ])
 
 let win
+let blockedFiles = {
+  in: [],
+  out: []
+}
+
+const devPath = 'D:\\Projects\\acut\\print-app'
 const store = new Store()
+const sumatraPdfPath = isDev
+    ? devPath+'\\ext\\sumatra\\SumatraPDF-3.4.6-32.exe'
+    : require("path").dirname(require('electron').app.getPath("exe"))+'\\SumatraPDF-3.4.6-32.exe'
+log.transports.file.resolvePath = () => path.join(devPath, '/logs/log.log')
 
 async function createWindow() {
   // Create the browser window.
@@ -140,6 +149,30 @@ function timestamp() {
 // IPC Listeners
 ////////////////////////////////
 
+ipcMain.on('check-mo-activation', (event) => {
+  let settings = JSON.parse(store.get('settings'))
+
+  let moDirectories = [
+    settings.paths.mo+'\\Adresslabel',
+    settings.paths.mo+'\\Adresslabel\\Verarbeitet',
+    settings.paths.mo+'\\In'
+  ]
+
+  moDirectories.forEach(dir => {
+    fsExtra.pathExists(dir, (err, exists) => {
+      log.log(dir+' '+exists)
+    })
+  })
+
+  let active = moDirectories.every(dir => {
+    return fsExtra.pathExistsSync(dir)
+  }) && settings.printers.labelSmall !== null
+
+  log.log(active)
+
+  event.reply('mo-activation-checked', active)
+})
+
 ipcMain.on('get-version', (event) => {
   event.reply('get-version', app.getVersion())
   log.log(app.getVersion())
@@ -170,40 +203,72 @@ ipcMain.on('check-for-update', (event) => {
   })
 })
 
-ipcMain.on('open-sumatra', (event) => {
-  log.log(event)
-  log.log('test')
-})
-
 ipcMain.on('mailoptimizer-polling', (event) => {
   let settings = JSON.parse(store.get('settings'))
 
-  if(settings.paths.download === '' || settings.paths.mo === '' || settings.token === '') {
+  if(settings.paths.download === '' ||
+      settings.paths.mo === '' ||
+      settings.paths.mo === undefined ||
+      settings.token === '' ||
+      settings.printers.labelSmall === ''
+  ) {
     return
   }
 
   let xmlFiles = fs.readdirSync(settings.paths.download)
   xmlFiles.forEach(file => {
-    if (file.indexOf(settings.token+'.bpslabel.xml') !== -1) {
+    if (file.indexOf(settings.token+'.bpslabel.xml') !== -1 && blockedFiles.in.indexOf(file) === -1) {
+      blockedFiles.in.push(file)
       event.reply('append-to-log', 'Mailoptimizer-XML gefunden: '+file)
       fsExtra.move(settings.paths.download+'\\'+file, settings.paths.mo+'\\In\\'+file)
           .then(() => {
             event.reply('append-to-log', 'XML-Datei zu Mailoptimizer verschoben: '+file)
+            let index = blockedFiles.in.indexOf(file)
+            blockedFiles.in.splice(index, 1)
           })
     }
   })
 
-  // let labelFiles = fs.readdirSync(settings.paths.mo+'\\Adresslabel')
-  // labelFiles.forEach(file => {
-  //   if (file.indexOf(settings.token+'.bpslabel.png') !== -1) {
-  //     event.reply('append-to-log', 'Mailoptimizer-Label gefunden: '+file)
-  //     fsExtra.move(settings.paths.mo+'\\Adresslabel\\'+file, settings.paths.mo+'\\Adresslabel\\Verarbeitet\\'+file)
-  //         .then(() => {
-  //           event.reply('append-to-log', 'XML-Datei zu Mailoptimizer verschoben: '+file)
-  //         })
-  //   }
-  // })
+  let labelFiles = fs.readdirSync(settings.paths.mo+'\\Adresslabel')
+  labelFiles.forEach(file => {
+    if (file.indexOf(settings.token+'.bpslabel.png') !== -1 && blockedFiles.out.indexOf(file) === -1) {
+      blockedFiles.out.push(file)
+      event.reply('append-to-log', 'Mailoptimizer-Label gefunden: '+file)
+      let printWin = new BrowserWindow({
+        width: 500,
+        height: 258,
+        show: false
+      });
+      printWin.loadURL('file:///'+settings.paths.mo+'\\Adresslabel\\'+file)
+      printWin.webContents.on('did-finish-load', () => {
+        printWin.webContents.print({
+          silent: true,
+          color: false,
+          deviceName: settings.printers.labelSmall,
+          margins: {
+            marginType: 'custom',
+            top: 10,
+            left:0,
+            right:0,
+            bottom:0
+          },
+          dpi: 300
+        }, () => {
+          printWin = null;
+          event.reply('append-to-log', 'Mailoptimizer-Label gedruckt: '+file)
+          fsExtra.move(settings.paths.mo+'\\Adresslabel\\'+file, settings.paths.mo+'\\Adresslabel\\Verarbeitet\\'+file)
+              .then(() => {
+                event.reply('append-to-log', 'Mailoptimizer-Label archiviert: '+file)
+                let index = blockedFiles.out.indexOf(file)
+                blockedFiles.out.splice(index, 1)
+              })
+        })
+      });
+    }
+  })
 })
+
+let ably
 
 ipcMain.on('wms-polling', (event) => {
   let settings = JSON.parse(store.get('settings'))
@@ -213,10 +278,11 @@ ipcMain.on('wms-polling', (event) => {
     return
   }
 
-  const ably = new Ably.Realtime(settings.ablyKey)
+  ably = new Ably.Realtime(settings.ablyKey)
 
   ably.connection.on('failed', () => {
     event.reply('append-to-log', 'Es konnte keine Verbindung zum Server aufgebaut werden. Bitte Einstellungen prüfen')
+    ably.close()
   })
 
   ably.connection.on('connected', () => {
@@ -224,7 +290,7 @@ ipcMain.on('wms-polling', (event) => {
 
     const channel = ably.channels.get('public:prints')
     channel.subscribe('print.'+settings.token, (payload) => {
-      event.reply('append-to-log', 'Druckauftrag empfangen')
+      event.reply('append-to-log', 'Druckauftrag empfangen ('+payload.data.type+' / WMS-ID: '+payload.data.id+')')
 
       let file = settings.paths.download+'\\'+timestamp()+'.pdf'
       downloadFile(payload.data.url, file)
@@ -233,7 +299,7 @@ ipcMain.on('wms-polling', (event) => {
               printer: settings.printers[payload.data.printer],
               silent: true,
               pages: 1,
-              sumatraPdfPath: require("path").dirname(require('electron').app.getPath("exe"))+'\\SumatraPDF-3.4.6-32.exe'
+              sumatraPdfPath: sumatraPdfPath
             })
           })
     })
@@ -241,6 +307,8 @@ ipcMain.on('wms-polling', (event) => {
 })
 
 ipcMain.on('save-settings', (event, settings) => {
+  ably.close()
+  event.reply('append-to-log', 'Verbindung zum Server beendet')
   store.set('settings', settings)
   event.reply('save-settings')
   event.reply('append-to-log', 'Einstellungen gespeichert')

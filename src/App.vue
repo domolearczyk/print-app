@@ -75,7 +75,7 @@
               <small>Im Netzwerk freigegebener Ordner, auf die Kundennummer endend</small>
             </div>
             <div class="col-6">
-              <input @click="selectMoPath" class="w-100" type="text" v-model="settings.paths.mo">
+              <input :disabled="settings.mailoptimizer" @click="selectMoPath" class="w-100" type="text" v-model="settings.paths.mo">
             </div>
           </div>
           <div class="row mt-4">
@@ -106,24 +106,24 @@
               Mailoptimizer
             </div>
             <div class="col-6">
-              <input type="checkbox" id="mailoptimizer-checkbox" v-model="settings.mailoptimizer" :value="true">
+              <input type="checkbox" id="mailoptimizer-checkbox" @change="toggleMailoptimizer" v-model="settings.mailoptimizer" :value="true">
               <label for="mailoptimizer-checkbox">Aktiv</label>
             </div>
           </div>
-          <div class="row mt-3">
-            <div class="col-6">
-              <div>Polling-Intervall</div>
-              <small>Bei langsamen/alten PC's empfiehlt sich ein höherer Polling-Interval</small>
-            </div>
-            <div class="col-6">
-              <select class="w-100" v-model="settings.interval">
-                <option :value="1000">1 Sekunde</option>
-                <option :value="3000">3 Sekunden</option>
-                <option :value="5000">5 Sekunden</option>
-                <option :value="10000">10 Sekunden</option>
-              </select>
-            </div>
-          </div>
+<!--          <div class="row mt-3">-->
+<!--            <div class="col-6">-->
+<!--              <div>Polling-Intervall</div>-->
+<!--              <small>Bei langsamen/alten PC's empfiehlt sich ein höherer Polling-Interval</small>-->
+<!--            </div>-->
+<!--            <div class="col-6">-->
+<!--              <select class="w-100" v-model="settings.interval">-->
+<!--                <option :value="1000">1 Sekunde</option>-->
+<!--                <option :value="3000">3 Sekunden</option>-->
+<!--                <option :value="5000">5 Sekunden</option>-->
+<!--                <option :value="10000">10 Sekunden</option>-->
+<!--              </select>-->
+<!--            </div>-->
+<!--          </div>-->
           <div class="row mt-3">
             <div class="col-6">
               Update
@@ -192,15 +192,11 @@ export default {
     }
   },
   methods: {
-    // getPrinters() {
-    //   this.blocked = true
-    //   axios.get('https://wms.acut-services.de').then(response => {
-    //     console.log(response)
-    //   })
-    //       .finally(() => {
-    //         this.blocked = false
-    //       })
-    // }
+    toggleMailoptimizer() {
+      if(this.settings.mailoptimizer === true) {
+        window.ipc.send('check-mo-activation')
+      }
+    },
     selectMoPath() {
       window.ipc.send('select-mo-path')
     },
@@ -262,6 +258,13 @@ export default {
       if(confirm('Es ist ein neues Update verfügbar. Jetzt App neu starten?')) {
         window.ipc.send('restart-app')
       }
+    })
+
+    window.ipc.on('mo-activation-checked', (response) => {
+      if(response === false) {
+        alert('Mailoptimizer konnte nicht aktiviert werden. Bitte Pfade und Drucker überprüfen')
+      }
+      this.settings.mailoptimizer = response
     })
 
     setInterval(() => {

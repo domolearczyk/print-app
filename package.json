@@ -1,6 +1,6 @@
 {
   "name": "print-app",
-  "version": "0.1.3",
+  "version": "0.2.0",
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
@@ -18,6 +18,7 @@
     "core-js": "^3.8.3",
     "dialogs": "^2.0.1",
     "electron-dialog": "^2.0.0",
+    "electron-is-dev": "^2.0.0",
     "electron-log": "^4.4.8",
     "electron-store": "^8.1.0",
     "electron-updater": "^5.3.0",

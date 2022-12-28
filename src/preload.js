@@ -12,7 +12,9 @@ const validChannels = [
     'save-settings',
     'load-settings',
     'restart-app',
-    'update-downloaded'
+    'update-downloaded',
+    'check-mo-activation',
+    'mo-activation-checked'
 ];
 
 contextBridge.exposeInMainWorld(
