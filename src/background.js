@@ -299,8 +299,13 @@ ipcMain.on('wms-polling', (event) => {
               printer: settings.printers[payload.data.printer],
               silent: true,
               pages: 1,
+              orientation: payload.data.orientation,
+              scale: payload.data.scale,
               sumatraPdfPath: sumatraPdfPath
             })
+          })
+          .catch(() => {
+            event.reply('append-to-log', 'Druckauftrag ('+payload.data.type+' / WMS-ID: '+payload.data.id+') konnte nicht gedruckt werden ('+payload.data.url+')')
           })
     })
   })
