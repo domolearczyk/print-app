@@ -269,3 +269,80 @@
 [2023-02-27 10:09:25.116] [info]  \\172.20.1.100\Mailoptimizer\Kunden\61227\In true
 [2023-02-27 10:09:25.117] [info]  \\172.20.1.100\Mailoptimizer\Kunden\61227\Adresslabel true
 [2023-02-27 10:09:25.118] [info]  \\172.20.1.100\Mailoptimizer\Kunden\61227\Adresslabel\Verarbeitet true
+[2023-02-27 12:31:32.416] [info]  checking for updates
+[2023-02-27 12:31:33.010] [info]  0.2.3
+[2023-02-27 12:31:33.761] [info]  update available
+[2023-02-27 12:31:36.044] [info]  download in progress
+[2023-02-27 12:31:36.044] [info]  {
+  total: 1179066,
+  delta: 74015,
+  transferred: 74015,
+  percent: 6.277426369685836,
+  bytesPerSecond: 76383
+}
+[2023-02-27 12:31:36.202] [info]  download in progress
+[2023-02-27 12:31:36.202] [info]  {
+  total: 1179066,
+  delta: 97994,
+  transferred: 97994,
+  percent: 8.311154761480697,
+  bytesPerSecond: 86951
+}
+[2023-02-27 12:31:37.179] [info]  download in progress
+[2023-02-27 12:31:37.180] [info]  {
+  total: 1179066,
+  delta: 163530,
+  transferred: 163530,
+  percent: 13.869452600617777,
+  bytesPerSecond: 77723
+}
+[2023-02-27 12:31:37.224] [info]  download in progress
+[2023-02-27 12:31:37.224] [info]  {
+  total: 1179066,
+  delta: 702765,
+  transferred: 866295,
+  percent: 73.47298624504481,
+  bytesPerSecond: 403115
+}
+[2023-02-27 12:31:38.826] [info]  download in progress
+[2023-02-27 12:31:38.827] [info]  {
+  total: 1179066,
+  delta: 791998,
+  transferred: 955528,
+  percent: 81.04109523979149,
+  bytesPerSecond: 254740
+}
+[2023-02-27 12:31:38.833] [info]  download in progress
+[2023-02-27 12:31:38.834] [info]  {
+  total: 1179066,
+  delta: 43334,
+  transferred: 998862,
+  percent: 84.7163772002585,
+  bytesPerSecond: 265796
+}
+[2023-02-27 12:31:39.536] [info]  download in progress
+[2023-02-27 12:31:39.536] [info]  {
+  total: 1179066,
+  delta: 128270,
+  transferred: 1083798,
+  percent: 91.92004518831007,
+  bytesPerSecond: 242950
+}
+[2023-02-27 12:31:39.654] [info]  download in progress
+[2023-02-27 12:31:39.655] [info]  {
+  total: 1179066,
+  delta: 267017,
+  transferred: 1222545,
+  percent: 103.68757983013674,
+  bytesPerSecond: 266990
+}
+[2023-02-27 12:31:39.655] [info]  download in progress
+[2023-02-27 12:31:39.655] [info]  {
+  total: 1179066,
+  delta: 267017,
+  transferred: 1222545,
+  percent: 100,
+  bytesPerSecond: 266931
+}
+[2023-02-27 12:32:01.163] [info]  checking for updates
+[2023-02-27 12:32:01.598] [info]  0.2.4
