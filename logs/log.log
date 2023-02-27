@@ -150,3 +150,122 @@
 [2023-01-18 18:32:47.547] [info]  0.2.2
 [2023-01-18 18:37:16.040] [info]  0.2.2
 [2023-01-18 19:07:11.419] [info]  0.2.2
+[2023-01-19 10:15:31.915] [info]  checking for updates
+[2023-01-19 10:15:32.418] [info]  0.2.2
+[2023-01-19 10:15:33.261] [info]  update available
+[2023-01-19 10:15:37.983] [info]  download in progress
+[2023-01-19 10:15:37.984] [info]  {
+  total: 1156325,
+  delta: 59970,
+  transferred: 59970,
+  percent: 5.186258188658033,
+  bytesPerSecond: 107089
+}
+[2023-01-19 10:15:38.106] [info]  download in progress
+[2023-01-19 10:15:38.107] [info]  {
+  total: 1156325,
+  delta: 83949,
+  transferred: 83949,
+  percent: 7.259983136229001,
+  bytesPerSecond: 122912
+}
+[2023-01-19 10:15:38.387] [info]  download in progress
+[2023-01-19 10:15:38.388] [info]  {
+  total: 1156325,
+  delta: 852208,
+  transferred: 852208,
+  percent: 73.69969515490887,
+  bytesPerSecond: 884033
+}
+[2023-01-19 10:15:39.348] [info]  download in progress
+[2023-01-19 10:15:39.348] [info]  {
+  total: 1156325,
+  delta: 908756,
+  transferred: 908756,
+  percent: 78.59001578276003,
+  bytesPerSecond: 472081
+}
+[2023-01-19 10:15:39.356] [info]  download in progress
+[2023-01-19 10:15:39.357] [info]  {
+  total: 1156325,
+  delta: 76089,
+  transferred: 984845,
+  percent: 85.17025922642856,
+  bytesPerSecond: 509490
+}
+[2023-01-19 10:15:39.812] [info]  download in progress
+[2023-01-19 10:15:39.813] [info]  {
+  total: 1156325,
+  delta: 108857,
+  transferred: 1017613,
+  percent: 88.00406460121506,
+  bytesPerSecond: 425958
+}
+[2023-01-19 10:15:39.973] [info]  download in progress
+[2023-01-19 10:15:39.974] [info]  {
+  total: 1156325,
+  delta: 247569,
+  transferred: 1156325,
+  percent: 100,
+  bytesPerSecond: 453461
+}
+[2023-01-19 10:15:51.349] [info]  checking for updates
+[2023-01-19 10:15:51.760] [info]  0.2.3
+[2023-02-08 13:15:05.964] [info]  checking for updates
+[2023-02-08 13:15:06.601] [info]  0.2.3
+[2023-02-15 16:50:19.926] [info]  checking for updates
+[2023-02-15 16:50:20.459] [info]  0.2.3
+[2023-02-22 09:21:45.085] [info]  0.2.3
+[2023-02-22 09:26:41.384] [info]  true
+[2023-02-22 09:26:41.385] [info]  \\172.20.1.100\Mailoptimizer\Kunden\61227\In true
+[2023-02-22 09:26:41.386] [info]  \\172.20.1.100\Mailoptimizer\Kunden\61227\Adresslabel true
+[2023-02-22 09:26:41.387] [info]  \\172.20.1.100\Mailoptimizer\Kunden\61227\Adresslabel\Verarbeitet true
+[2023-02-22 09:27:15.501] [info]  true
+[2023-02-22 09:27:15.502] [info]  \\172.20.1.100\Mailoptimizer\Kunden\61227\Adresslabel true
+[2023-02-22 09:27:15.503] [info]  \\172.20.1.100\Mailoptimizer\Kunden\61227\In true
+[2023-02-22 09:27:15.503] [info]  \\172.20.1.100\Mailoptimizer\Kunden\61227\Adresslabel\Verarbeitet true
+[2023-02-22 09:42:39.175] [info]  0.2.3
+[2023-02-24 13:02:46.244] [info]  checking for updates
+[2023-02-24 13:02:46.978] [info]  0.2.3
+[2023-02-27 09:31:28.256] [info]  checking for updates
+[2023-02-27 09:31:28.822] [info]  0.2.3
+[2023-02-27 09:44:04.117] [info]  0.2.3
+[2023-02-27 09:51:37.559] [info]  0.2.3
+[2023-02-27 09:53:03.445] [info]  0.2.3
+[2023-02-27 09:53:10.360] [info]  0.2.3
+[2023-02-27 09:55:26.894] [info]  0.2.3
+[2023-02-27 09:55:30.061] [info]  0.2.3
+[2023-02-27 09:56:02.233] [info]  0.2.3
+[2023-02-27 09:56:04.847] [info]  \\172.20.1.100\Mailoptimizer\Kunden\61227\Adresslabel\Verarbeitet true
+[2023-02-27 09:56:04.848] [info]  \\172.20.1.100\Mailoptimizer\Kunden\61227\Adresslabel true
+[2023-02-27 09:56:04.848] [info]  \\172.20.1.100\Mailoptimizer\Kunden\61227\In true
+[2023-02-27 09:56:07.786] [info]  \\172.20.1.100\Mailoptimizer\Kunden\61227\Adresslabel true
+[2023-02-27 09:56:07.787] [info]  \\172.20.1.100\Mailoptimizer\Kunden\61227\Adresslabel\Verarbeitet true
+[2023-02-27 09:56:07.787] [info]  \\172.20.1.100\Mailoptimizer\Kunden\61227\In true
+[2023-02-27 09:56:12.972] [info]  \\172.20.1.100\Mailoptimizer\Kunden\61227\Adresslabel\Verarbeitet true
+[2023-02-27 09:56:12.972] [info]  \\172.20.1.100\Mailoptimizer\Kunden\61227\In true
+[2023-02-27 09:56:12.973] [info]  \\172.20.1.100\Mailoptimizer\Kunden\61227\Adresslabel true
+[2023-02-27 09:57:10.745] [info]  0.2.3
+[2023-02-27 09:57:14.350] [info]  \\172.20.1.100\Mailoptimizer\Kunden\61227\Adresslabel\Verarbeitet true
+[2023-02-27 09:57:14.350] [info]  \\172.20.1.100\Mailoptimizer\Kunden\61227\In true
+[2023-02-27 09:57:14.351] [info]  \\172.20.1.100\Mailoptimizer\Kunden\61227\Adresslabel true
+[2023-02-27 09:57:17.231] [info]  \\172.20.1.100\Mailoptimizer\Kunden\61227\Adresslabel true
+[2023-02-27 09:57:17.231] [info]  \\172.20.1.100\Mailoptimizer\Kunden\61227\Adresslabel\Verarbeitet true
+[2023-02-27 09:57:17.232] [info]  \\172.20.1.100\Mailoptimizer\Kunden\61227\In true
+[2023-02-27 09:58:09.490] [info]  0.2.3
+[2023-02-27 09:58:16.669] [info]  \\172.20.1.100\Mailoptimizer\Kunden\61227\Adresslabel\Verarbeitet true
+[2023-02-27 09:58:16.670] [info]  \\172.20.1.100\Mailoptimizer\Kunden\61227\Adresslabel true
+[2023-02-27 09:58:16.671] [info]  \\172.20.1.100\Mailoptimizer\Kunden\61227\In true
+[2023-02-27 09:58:19.230] [info]  \\172.20.1.100\Mailoptimizer\Kunden\61227\Adresslabel true
+[2023-02-27 09:58:19.231] [info]  \\172.20.1.100\Mailoptimizer\Kunden\61227\Adresslabel\Verarbeitet true
+[2023-02-27 09:58:19.231] [info]  \\172.20.1.100\Mailoptimizer\Kunden\61227\In true
+[2023-02-27 09:58:22.345] [info]  \\172.20.1.100\Mailoptimizer\Kunden\61227\Adresslabel true
+[2023-02-27 09:58:22.346] [info]  \\172.20.1.100\Mailoptimizer\Kunden\61227\Adresslabel\Verarbeitet true
+[2023-02-27 09:58:22.346] [info]  \\172.20.1.100\Mailoptimizer\Kunden\61227\In true
+[2023-02-27 10:09:07.887] [info]  0.2.3
+[2023-02-27 10:09:12.594] [info]  \\172.20.1.100\Mailoptimizer\Kunden\61227\Adresslabel true
+[2023-02-27 10:09:12.595] [info]  \\172.20.1.100\Mailoptimizer\Kunden\61227\In true
+[2023-02-27 10:09:12.596] [info]  \\172.20.1.100\Mailoptimizer\Kunden\61227\Adresslabel\Verarbeitet true
+[2023-02-27 10:09:25.116] [info]  \\172.20.1.100\Mailoptimizer\Kunden\61227\In true
+[2023-02-27 10:09:25.117] [info]  \\172.20.1.100\Mailoptimizer\Kunden\61227\Adresslabel true
+[2023-02-27 10:09:25.118] [info]  \\172.20.1.100\Mailoptimizer\Kunden\61227\Adresslabel\Verarbeitet true

@@ -95,6 +95,14 @@
           </div>
           <div class="row mt-3">
             <div class="col-6">
+              BPS Station (inkl. Leerzeichen)
+            </div>
+            <div class="col-6">
+              <input type="text" class="w-100" v-model="settings.bpsSpot">
+            </div>
+          </div>
+          <div class="row mt-3">
+            <div class="col-6">
               Ably-Schlüssel
             </div>
             <div class="col-6">
@@ -174,6 +182,7 @@ export default {
       settings: {
         token: '',
         ablyKey: '',
+        bpsSpot: '',
         mailoptimizer: false,
         printers: {
           a4: null,
@@ -255,14 +264,14 @@ export default {
     })
 
     window.ipc.on('update-downloaded', () => {
-      if(confirm('Es ist ein neues Update verfügbar. Jetzt App neu starten?')) {
+      if(confirm('Es ist ein neues Update verfügbar. Bitte starten Sie die APP neu?')) {
         window.ipc.send('restart-app')
       }
     })
 
     window.ipc.on('mo-activation-checked', (response) => {
       if(response === false) {
-        alert('Mailoptimizer konnte nicht aktiviert werden. Bitte Pfade und Drucker überprüfen')
+        alert('Mailoptimizer konnte nicht aktiviert werden. Bitte Pfade und Drucker überprüfen sowie eine BPS Station eingeben')
       }
       this.settings.mailoptimizer = response
     })

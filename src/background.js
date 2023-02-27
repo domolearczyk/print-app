@@ -166,9 +166,7 @@ ipcMain.on('check-mo-activation', (event) => {
 
   let active = moDirectories.every(dir => {
     return fsExtra.pathExistsSync(dir)
-  }) && settings.printers.labelSmall !== null
-
-  log.log(active)
+  }) && settings.printers.labelSmall !== null && settings.bpsSpot !== ''
 
   event.reply('mo-activation-checked', active)
 })
@@ -209,7 +207,7 @@ ipcMain.on('mailoptimizer-polling', (event) => {
   if(settings.paths.download === '' ||
       settings.paths.mo === '' ||
       settings.paths.mo === undefined ||
-      settings.token === '' ||
+      settings.bpsSpot === '' ||
       settings.printers.labelSmall === ''
   ) {
     return
@@ -217,7 +215,7 @@ ipcMain.on('mailoptimizer-polling', (event) => {
 
   let xmlFiles = fs.readdirSync(settings.paths.download)
   xmlFiles.forEach(file => {
-    if (file.indexOf(settings.token+'.bpslabel.xml') !== -1 && blockedFiles.in.indexOf(file) === -1) {
+    if (file.indexOf(settings.bpsSpot+'.bpslabel.xml') !== -1 && blockedFiles.in.indexOf(file) === -1) {
       blockedFiles.in.push(file)
       event.reply('append-to-log', 'Mailoptimizer-XML gefunden: '+file)
       fsExtra.move(settings.paths.download+'\\'+file, settings.paths.mo+'\\In\\'+file)
@@ -231,7 +229,7 @@ ipcMain.on('mailoptimizer-polling', (event) => {
 
   let labelFiles = fs.readdirSync(settings.paths.mo+'\\Adresslabel')
   labelFiles.forEach(file => {
-    if (file.indexOf(settings.token+'.bpslabel.png') !== -1 && blockedFiles.out.indexOf(file) === -1) {
+    if (file.indexOf(settings.bpsSpot+'.bpslabel.png') !== -1 && blockedFiles.out.indexOf(file) === -1) {
       blockedFiles.out.push(file)
       event.reply('append-to-log', 'Mailoptimizer-Label gefunden: '+file)
       let printWin = new BrowserWindow({
