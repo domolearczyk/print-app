@@ -296,7 +296,7 @@ ipcMain.on('wms-polling', (event) => {
             print(file, {
               printer: settings.printers[payload.data.printer],
               silent: true,
-              pages: payload.data.pages,
+              copies: payload.data.copies,
               orientation: payload.data.orientation,
               scale: payload.data.scale,
               sumatraPdfPath: sumatraPdfPath
