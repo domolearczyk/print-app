@@ -26,7 +26,8 @@ let blockedFiles = {
   out: []
 }
 
-const devPath = 'D:\\Projects\\acut\\print-app'
+const devPath = 'C:\\Users\\dolea\\Projekte\\acut\\print-app'
+// const devPath = 'D:\\Projects\\acut\\print-app'
 const store = new Store()
 const sumatraPdfPath = isDev
     ? devPath+'\\ext\\sumatra\\SumatraPDF-3.4.6-32.exe'
@@ -300,7 +301,7 @@ ipcMain.on('wms-polling', (event) => {
               orientation: payload.data.orientation,
               scale: payload.data.scale,
               sumatraPdfPath: sumatraPdfPath
-            })
+            }).catch(err => console.log(err))
           })
           .catch(() => {
             event.reply('append-to-log', 'Druckauftrag ('+payload.data.type+' / WMS-ID: '+payload.data.id+') konnte nicht gedruckt werden ('+payload.data.url+')')
