@@ -21,6 +21,7 @@ protocol.registerSchemesAsPrivileged([
 ])
 
 let win
+let ably
 let blockedFiles = {
   in: [],
   out: []
@@ -267,9 +268,7 @@ ipcMain.on('mailoptimizer-polling', (event) => {
   })
 })
 
-let ably
-
-ipcMain.on('wms-polling', (event) => {
+ipcMain.on('wms-start-polling', (event) => {
   let settings = JSON.parse(store.get('settings'))
 
   if(settings.paths.download === '' || settings.ablyKey === '' || settings.token === '') {
@@ -285,6 +284,7 @@ ipcMain.on('wms-polling', (event) => {
   })
 
   ably.connection.on('connected', () => {
+    event.reply('set-ably-connection', true)
     event.reply('append-to-log', 'Verbindung zum Server aufgebaut. Warte auf Label...')
 
     const channel = ably.channels.get('public:prints')
@@ -308,6 +308,13 @@ ipcMain.on('wms-polling', (event) => {
           })
     })
   })
+})
+
+ipcMain.on('wms-close-polling', (event) => {
+  ably.connection.close()
+  event.reply('append-to-log', 'Verbindung zum Server beendet. Verbinde erneut')
+  event.reply('set-ably-connection', false)
+  event.reply('wms-restart-polling')
 })
 
 ipcMain.on('save-settings', (event, settings) => {

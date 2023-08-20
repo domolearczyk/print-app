@@ -111,6 +111,15 @@
           </div>
           <div class="row mt-3">
             <div class="col-6">
+              Ably-Server Status
+            </div>
+            <div class="col-6">
+              <span v-if="ablyConnected" style="color:green;">Verbunden</span>
+              <span v-else style="color:red;">Nicht verbunden</span>
+            </div>
+          </div>
+          <div class="row mt-3">
+            <div class="col-6">
               Mailoptimizer
             </div>
             <div class="col-6">
@@ -263,6 +272,10 @@ export default {
       this.appendToLog(log)
     })
 
+    window.ipc.on('set-ably-connection', (ablyConnected) => {
+      this.ablyConnected = ablyConnected
+    })
+
     window.ipc.on('update-downloaded', () => {
       if(confirm('Es ist ein neues Update verfügbar. Bitte starten Sie die APP neu?')) {
         window.ipc.send('restart-app')
@@ -282,7 +295,17 @@ export default {
       }
     }, 3000)
 
-    window.ipc.send('wms-polling')
+    window.ipc.send('wms-start-polling')
+
+    setInterval(() => {
+      if(this.ablyConnected) {
+        window.ipc.send('wms-close-polling')
+      }
+    }, 3600000)
+
+    window.ipc.on('wms-restart-polling', () => {
+      window.ipc.send('wms-start-polling')
+    })
   }
 }
 </script>
