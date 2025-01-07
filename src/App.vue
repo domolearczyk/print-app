@@ -69,15 +69,15 @@
               <input @click="selectDownloadPath" class="w-100" type="text" v-model="settings.paths.download">
             </div>
           </div>
-          <div class="row mt-3">
-            <div class="col-6">
-              <div>Mailoptimizer Pfad</div>
-              <small>Im Netzwerk freigegebener Ordner, auf die Kundennummer endend</small>
-            </div>
-            <div class="col-6">
-              <input :disabled="settings.mailoptimizer" @click="selectMoPath" class="w-100" type="text" v-model="settings.paths.mo">
-            </div>
-          </div>
+<!--          <div class="row mt-3">-->
+<!--            <div class="col-6">-->
+<!--              <div>Mailoptimizer Pfad</div>-->
+<!--              <small>Im Netzwerk freigegebener Ordner, auf die Kundennummer endend</small>-->
+<!--            </div>-->
+<!--            <div class="col-6">-->
+<!--              <input :disabled="settings.mailoptimizer" @click="selectMoPath" class="w-100" type="text" v-model="settings.paths.mo">-->
+<!--            </div>-->
+<!--          </div>-->
           <div class="row mt-4">
             <div class="col-12">
               <button @click="saveSettings">Speichern</button>
@@ -118,15 +118,15 @@
               <span v-else style="color:red;">Nicht verbunden</span>
             </div>
           </div>
-          <div class="row mt-3">
-            <div class="col-6">
-              Mailoptimizer
-            </div>
-            <div class="col-6">
-              <input type="checkbox" id="mailoptimizer-checkbox" @change="toggleMailoptimizer" v-model="settings.mailoptimizer" :value="true">
-              <label for="mailoptimizer-checkbox">Aktiv</label>
-            </div>
-          </div>
+<!--          <div class="row mt-3">-->
+<!--            <div class="col-6">-->
+<!--              Mailoptimizer-->
+<!--            </div>-->
+<!--            <div class="col-6">-->
+<!--              <input type="checkbox" id="mailoptimizer-checkbox" @change="toggleMailoptimizer" v-model="settings.mailoptimizer" :value="true">-->
+<!--              <label for="mailoptimizer-checkbox">Aktiv</label>-->
+<!--            </div>-->
+<!--          </div>-->
 <!--          <div class="row mt-3">-->
 <!--            <div class="col-6">-->
 <!--              <div>Polling-Intervall</div>-->

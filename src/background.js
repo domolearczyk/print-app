@@ -203,70 +203,70 @@ ipcMain.on('check-for-update', (event) => {
   })
 })
 
-ipcMain.on('mailoptimizer-polling', (event) => {
-  let settings = JSON.parse(store.get('settings'))
-
-  if(settings.paths.download === '' ||
-      settings.paths.mo === '' ||
-      settings.paths.mo === undefined ||
-      settings.bpsSpot === '' ||
-      settings.printers.labelSmall === ''
-  ) {
-    return
-  }
-
-  let xmlFiles = fs.readdirSync(settings.paths.download)
-  xmlFiles.forEach(file => {
-    if (file.indexOf(settings.bpsSpot+'.bpslabel.xml') !== -1 && blockedFiles.in.indexOf(file) === -1) {
-      blockedFiles.in.push(file)
-      event.reply('append-to-log', 'Mailoptimizer-XML gefunden: '+file)
-      fsExtra.move(settings.paths.download+'\\'+file, settings.paths.mo+'\\In\\'+file)
-          .then(() => {
-            event.reply('append-to-log', 'XML-Datei zu Mailoptimizer verschoben: '+file)
-            let index = blockedFiles.in.indexOf(file)
-            blockedFiles.in.splice(index, 1)
-          })
-    }
-  })
-
-  let labelFiles = fs.readdirSync(settings.paths.mo+'\\Adresslabel')
-  labelFiles.forEach(file => {
-    if (file.indexOf(settings.bpsSpot+'.bpslabel.png') !== -1 && blockedFiles.out.indexOf(file) === -1) {
-      blockedFiles.out.push(file)
-      event.reply('append-to-log', 'Mailoptimizer-Label gefunden: '+file)
-      let printWin = new BrowserWindow({
-        width: 500,
-        height: 258,
-        show: false
-      });
-      printWin.loadURL('file:///'+settings.paths.mo+'\\Adresslabel\\'+file)
-      printWin.webContents.on('did-finish-load', () => {
-        printWin.webContents.print({
-          silent: true,
-          color: false,
-          deviceName: settings.printers.labelSmall,
-          margins: {
-            marginType: 'custom',
-            top: 10,
-            left:0,
-            right:0,
-            bottom:0
-          },
-          dpi: 300
-        }, () => {
-          printWin = null;
-          event.reply('append-to-log', 'Mailoptimizer-Label gedruckt: '+file)
-          fsExtra.move(settings.paths.mo+'\\Adresslabel\\'+file, settings.paths.mo+'\\Adresslabel\\Verarbeitet\\'+file)
-              .then(() => {
-                event.reply('append-to-log', 'Mailoptimizer-Label archiviert: '+file)
-                let index = blockedFiles.out.indexOf(file)
-                blockedFiles.out.splice(index, 1)
-              })
-        })
-      });
-    }
-  })
-})
+// ipcMain.on('mailoptimizer-polling', (event) => {
+//   let settings = JSON.parse(store.get('settings'))
+//
+//   if(settings.paths.download === '' ||
+//       settings.paths.mo === '' ||
+//       settings.paths.mo === undefined ||
+//       settings.bpsSpot === '' ||
+//       settings.printers.labelSmall === ''
+//   ) {
+//     return
+//   }
+//
+//   let xmlFiles = fs.readdirSync(settings.paths.download)
+//   xmlFiles.forEach(file => {
+//     if (file.indexOf(settings.bpsSpot+'.bpslabel.xml') !== -1 && blockedFiles.in.indexOf(file) === -1) {
+//       blockedFiles.in.push(file)
+//       event.reply('append-to-log', 'Mailoptimizer-XML gefunden: '+file)
+//       fsExtra.move(settings.paths.download+'\\'+file, settings.paths.mo+'\\In\\'+file)
+//           .then(() => {
+//             event.reply('append-to-log', 'XML-Datei zu Mailoptimizer verschoben: '+file)
+//             let index = blockedFiles.in.indexOf(file)
+//             blockedFiles.in.splice(index, 1)
+//           })
+//     }
+//   })
+//
+//   let labelFiles = fs.readdirSync(settings.paths.mo+'\\Adresslabel')
+//   labelFiles.forEach(file => {
+//     if (file.indexOf(settings.bpsSpot+'.bpslabel.png') !== -1 && blockedFiles.out.indexOf(file) === -1) {
+//       blockedFiles.out.push(file)
+//       event.reply('append-to-log', 'Mailoptimizer-Label gefunden: '+file)
+//       let printWin = new BrowserWindow({
+//         width: 500,
+//         height: 258,
+//         show: false
+//       });
+//       printWin.loadURL('file:///'+settings.paths.mo+'\\Adresslabel\\'+file)
+//       printWin.webContents.on('did-finish-load', () => {
+//         printWin.webContents.print({
+//           silent: true,
+//           color: false,
+//           deviceName: settings.printers.labelSmall,
+//           margins: {
+//             marginType: 'custom',
+//             top: 10,
+//             left:0,
+//             right:0,
+//             bottom:0
+//           },
+//           dpi: 300
+//         }, () => {
+//           printWin = null;
+//           event.reply('append-to-log', 'Mailoptimizer-Label gedruckt: '+file)
+//           fsExtra.move(settings.paths.mo+'\\Adresslabel\\'+file, settings.paths.mo+'\\Adresslabel\\Verarbeitet\\'+file)
+//               .then(() => {
+//                 event.reply('append-to-log', 'Mailoptimizer-Label archiviert: '+file)
+//                 let index = blockedFiles.out.indexOf(file)
+//                 blockedFiles.out.splice(index, 1)
+//               })
+//         })
+//       });
+//     }
+//   })
+// })
 
 ipcMain.on('wms-start-polling', (event) => {
   let settings = JSON.parse(store.get('settings'))
@@ -291,21 +291,48 @@ ipcMain.on('wms-start-polling', (event) => {
     channel.subscribe('print.'+settings.token, (payload) => {
       event.reply('append-to-log', 'Druckauftrag empfangen ('+payload.data.type+' / WMS-ID: '+payload.data.id+')')
 
-      let file = settings.paths.download+'\\'+timestamp()+'.pdf'
-      downloadFile(payload.data.url, file)
-          .then(() => {
-            print(file, {
-              printer: settings.printers[payload.data.printer],
-              silent: true,
-              copies: payload.data.copies,
-              orientation: payload.data.orientation,
-              scale: payload.data.scale,
-              sumatraPdfPath: sumatraPdfPath
-            }).catch(err => console.log(err))
+      // Wenn Mailoptimizer Label
+      if(payload.data.docType !== undefined && payload.data.docType === 'png') {
+        let printWin = new BrowserWindow({
+          width: 500,
+          height: 258,
+          show: false
+        });
+        printWin.loadURL(payload.data.url)
+        printWin.webContents.on('did-finish-load', () => {
+          printWin.webContents.print({
+            silent: true,
+            color: false,
+            deviceName: settings.printers.labelSmall,
+            margins: {
+              marginType: 'custom',
+              top: 10,
+              left:0,
+              right:0,
+              bottom:0
+            },
+            dpi: 300
           })
-          .catch(() => {
-            event.reply('append-to-log', 'Druckauftrag ('+payload.data.type+' / WMS-ID: '+payload.data.id+') konnte nicht gedruckt werden ('+payload.data.url+')')
-          })
+        });
+
+        // Wenn "normales" Label
+      } else {
+        let file = settings.paths.download+'\\'+timestamp()+'.pdf'
+        downloadFile(payload.data.url, file)
+            .then(() => {
+              print(file, {
+                printer: settings.printers[payload.data.printer],
+                silent: true,
+                copies: payload.data.copies,
+                orientation: payload.data.orientation,
+                scale: payload.data.scale,
+                sumatraPdfPath: sumatraPdfPath
+              }).catch(err => console.log(err))
+            })
+            .catch(() => {
+              event.reply('append-to-log', 'Druckauftrag ('+payload.data.type+' / WMS-ID: '+payload.data.id+') konnte nicht gedruckt werden ('+payload.data.url+')')
+            })
+      }
     })
   })
 })
